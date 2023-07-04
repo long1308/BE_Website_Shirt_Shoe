@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
+import Product from "../models/product";
 dotenv.config();
 
 const { SECRET_CODE, EMAIL_USERNAME, EMAIL_PASSWORD } = process.env;
@@ -177,7 +178,12 @@ export const update = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate('favoriteProducts.productId');
+    const user = await User.findById(req.params.id).populate(
+      "favoriteProducts.productId"
+    );
+    const favoriteProduct = await Product.find({
+      _id: { $in: user.favoriteProducts },
+    });
     if (!user) {
       return res.json({
         message: "Lấy user không thành công!",
@@ -186,10 +192,12 @@ export const get = async (req, res) => {
     return res.json({
       message: "Lấy thông tin user thành công!",
       user,
+      favoriteProduct,
     });
   } catch (error) {
     if (error.name === "CastError") {
       return res.status(400).json({ message: "Id không hợp lệ" });
     }
   }
-};
+}
+
