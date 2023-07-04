@@ -1,0 +1,10 @@
+import express from "express";
+import { createSize, getAllSize, getSize, removeSize, updateSize } from "../controllers/size";
+import { checkPermission } from "../middlewares/checkPermission.";
+const router = express.Router();
+router.get("/size", getAllSize);
+router.get("/size/:id", getSize);
+router.post("/size/",checkPermission, createSize);
+router.put("/size/:id",checkPermission, updateSize);
+router.delete("/size/:id",checkPermission, removeSize);
+export default router;
