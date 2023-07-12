@@ -178,9 +178,7 @@ export const update = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate(
-      "favoriteProducts.productId"
-    );
+    const user = await User.findById(req.params.id).populate('addressUser')
     const favoriteProduct = await Product.find({
       _id: { $in: user.favoriteProducts },
     });

@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema(
         ref: "FavoriteProduct",
       },
     ],
+    addressUser: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Address",
+      },
+    ],
   },
   {
     timestamps: true,
