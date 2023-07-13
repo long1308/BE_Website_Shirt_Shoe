@@ -32,7 +32,14 @@ const productSchema = new Schema(
     price: Number,
     priceSale: Number,
     image: Array,
-    rating: Number,
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    totalComments: {
+      type: Number,
+      default: 0,
+    },
     description: String,
     quantity: Number,
     description_short: String,
@@ -60,13 +67,11 @@ const productSchema = new Schema(
   },
   { timestamps: true, versionKey: false }
 );
-
 productSchema.pre("save", function (next) {
   if (this.isModified("hot_sale") || this.isModified("price")) {
     this.priceSale = this.price * (1 - this.hot_sale / 100);
   }
   let totalQuantity = 0;
-
   this.colorSizes.forEach((colorSize) => {
     colorSize.sizes.forEach((size) => {
       totalQuantity += size.quantity;
