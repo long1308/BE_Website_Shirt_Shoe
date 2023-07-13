@@ -24,24 +24,12 @@ export const productSchema = Joi.object({
     "any.required": "Trường image này là bắt buộc ",
     "string.base": "image phải là 1 string",
   }),
-  // size: Joi.array().required().messages({
-  //   "string.empty": "size không được để trống",
-  //   "any.required": "Trường size này là bắt buộc ",
-  //   "array.base": "size phải là 1 array",
-  // }),
-  // color: Joi.array().required().messages({
-  //   "string.empty": "color không được để trống",
-  //   "any.required": "Trường color này là bắt buộc ",
-  //   "array.base": "color phải là 1 array",
-  // }),
   colorSizes: Joi.array().required(),
   hot_sale: Joi.number(),
   description_short: Joi.string(),
   featured: Joi.boolean(),
   isVisible: Joi.boolean(),
-  rating: Joi.number().required().messages({
-    "string.empty": "rating không được để trống",
-    "any.required": "Trường Price này là bắt buộc",
+  rating: Joi.number().messages({
     "number.base": "Rating phải là 1 số",
   }),
   quantity: Joi.number().messages(),
@@ -54,22 +42,22 @@ export const productSchema = Joi.object({
 });
 export const sizeSchema = Joi.object({
   name: Joi.string().required().messages({
-    "string.empty": "Name không được để trống",
-    "any.required": "Trường Name này là bắt buộc",
-    "string.base": "Name phải là 1 string",
+    "string.empty": "Size không được để trống",
+    "any.required": "Trường Size này là bắt buộc",
+    "string.base": "Size phải là 1 string",
   }),
 });
 export const colorSchema = Joi.object({
   name: Joi.string().required().messages({
-    "string.empty": "Name không được để trống",
-    "any.required": "Trường Name này là bắt buộc",
-    "string.base": "Name phải là 1 string",
+    "string.empty": "Color không được để trống",
+    "any.required": "Trường Color này là bắt buộc",
+    "string.base": "Color phải là 1 string",
   }),
 });
 export const categorySchema = Joi.object({
   name: Joi.string().required().messages({
     "string.empty": "Category không được để trống",
     "any.required": "Trường Category này là bắt buộc",
-    "string.base": "Name phải là 1 String",
+    "string.base": "Category phải là 1 String",
   }),
 });

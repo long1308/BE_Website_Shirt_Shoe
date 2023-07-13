@@ -8,7 +8,6 @@ const addressSchema = new mongoose.Schema(
     phone: {
       type: Number,
       required: true,
-
     },
     cityLeeched: String,
     districtLeech: String,
@@ -26,6 +25,5 @@ const addressSchema = new mongoose.Schema(
     timestamps: true,
     versionKey: false,
   }
-
-)
-export default mongoose.model("Address", addressSchema)
+);
+export default mongoose.model("Address", addressSchema);
