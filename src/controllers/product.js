@@ -1,11 +1,12 @@
 import Product from "../models/product";
 import { productSchema } from "../Schema/product";
 export const getAll = async (req, res) => {
-  const { _sort = "priceSale", _limit = 100, _order = "asc" } = req.query;
+  //asc tăng dần
+  const { _sort = "createdAt", _limit = 100, _keywork = "asc" } = req.query;
   const option = {
     limit: _limit,
     sort: {
-      [_sort]: _order === "asc" ? 1 : -1,
+      [_sort]: _keywork === "asc" ? 1 : -1,
     },
     populate: "categoryId",
   };
@@ -126,7 +127,7 @@ export const update = async (req, res) => {
         message: error.details.map((error) => error.message),
       });
     }
-  
+
     // Lấy thông tin sản phẩm từ yêu cầu
     const updatedProduct = req.body;
     const { quantity, colorSizes } = updatedProduct;
@@ -153,9 +154,13 @@ export const update = async (req, res) => {
     }
 
     // Cập nhật sản phẩm
-    const product = await Product.findByIdAndUpdate(req.params.id, updatedProduct, {
-      new: true,
-    });
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      updatedProduct,
+      {
+        new: true,
+      }
+    );
 
     if (!product) {
       return res.json({
