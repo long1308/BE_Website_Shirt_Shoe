@@ -6,6 +6,7 @@ const categorySchema = new mongoose.Schema(
     },
     products: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
 );
+
 export default mongoose.model("Category", categorySchema);

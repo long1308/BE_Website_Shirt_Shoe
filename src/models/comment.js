@@ -20,7 +20,7 @@ const CommentSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
 );
 
 export default mongoose.model("Comment", CommentSchema);

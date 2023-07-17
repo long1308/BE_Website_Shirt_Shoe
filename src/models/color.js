@@ -3,6 +3,6 @@ const colorSchema = new mongoose.Schema(
   {
     name: String,
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
 );
 export default mongoose.model("Color", colorSchema);

@@ -65,7 +65,7 @@ const productSchema = new Schema(
     },
     colorSizes: [colorSizeSchema],
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
 );
 productSchema.pre("save", function (next) {
   if (this.isModified("hot_sale") || this.isModified("price")) {
