@@ -1,17 +1,36 @@
 import Product from "../models/product";
 import { productSchema } from "../Schema/product";
 export const getAll = async (req, res) => {
+
   //asc tăng dần
-  const { _sort = "createdAt", _limit = 100, _keywork = "asc" } = req.query;
-  const option = {
+  const { order = "createdAt", _limit = 100, keyword = "asc", size, color, category } = req.query;
+  const filter = {};
+  if (size) {
+    filter["colorSizes.sizes.size"] = size;
+
+  }
+  if (color) {
+    filter["colorSizes.color"] = color;
+  }
+  if (category) {
+
+    filter["categoryId"] = category; // Tạo bộ lọc cho trường categoryId
+  }
+
+
+  let option = {
     limit: _limit,
     sort: {
-      [_sort]: _keywork === "asc" ? 1 : -1,
+      [order]: keyword === "asc" ? 1 : -1,
     },
-    populate: "categoryId",
+    populate: {
+      path: "categoryId", // Thêm đường dẫn để populate thông tin của danh mục
+      select: "name", // Chỉ lấy trường "name" của danh mục
+    },
   };
   try {
-    const product = await Product.paginate({}, option);
+    const product = await Product.paginate(filter, option);
+
     if (product.length === 0) {
       return res.json({
         message: "Không có sản phẩm nào !",
