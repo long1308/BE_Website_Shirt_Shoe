@@ -19,7 +19,7 @@ const colorSizeSchema = new Schema(
   {
     color: {
       type: String,
-      enum: ["green", "blue", "pink", "red", "indigo"],
+      enum: ["green", "blue", "pink", "red", "indigo", "yellow", "orange",],
     },
     sizes: [sizeQuantitySchema],
   },
