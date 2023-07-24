@@ -3,7 +3,7 @@ import { productSchema } from "../Schema/product";
 export const getAll = async (req, res) => {
 
   //asc tăng dần
-  const { order = "createdAt", _limit = 100, keyword = "asc", size, color, category } = req.query;
+  const { order = "createdAt", _limit = 100, keyword = "asc", size, color, category, seach } = req.query;
   const filter = {};
   if (size) {
     filter["colorSizes.sizes.size"] = size;
@@ -46,7 +46,27 @@ export const getAll = async (req, res) => {
     });
   }
 };
-
+export const getSearch = async (req, res) => {
+  try {
+    const search = req.query.search;
+    const regex = new RegExp(search, 'i')
+    const product = await Product.paginate({ name: regex });
+    if (product.length === 0) {
+      return res.json({
+        message: "Không tìm thấy sản phẩm phù hợp !",
+      });
+    }
+    return res.json({
+      message: "Lấy sản phẩm thành công !",
+      product,
+    });
+  } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Không có sản phẩm nào có tên đó" });
+    }
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
 export const get = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
