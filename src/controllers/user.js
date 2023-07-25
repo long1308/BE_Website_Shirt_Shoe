@@ -1,5 +1,5 @@
 import User from "../models/user";
-import { signinSchema, signupSchema } from "../Schema/user.js";
+import { signinSchema, signupSchema, updateSchema } from "../Schema/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -150,31 +150,43 @@ export const remove = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    // validate
-    const { error } = signupSchema.validate(req.body, { abortEarly: false });
+    // Lấy thông tin user từ cơ sở dữ liệu
+    const user = await User.findById(req.params.id).populate('addressUser');
+    if (!user) {
+      return res.status(404).json({ message: "Không tìm thấy user" });
+    }
+
+    // So sánh mật khẩu cũ đã hash với mật khẩu mới được gửi từ client
+    const passwordsMatch = await bcrypt.compare(req.body.confirmPassword, user.password);
+    if (!passwordsMatch) {
+      return res.status(400).json({ message: "Mật khẩu không khớp" });
+    }
+
+    // Validate thông tin cần update
+    const { error } = updateSchema.validate(req.body, { abortEarly: false });
     if (error) {
       return res.status(400).json({
         message: error.details.map((error) => error.message),
       });
     }
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+
+    // Thực hiện update thông tin user
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    if (!user) {
-      return res.json({
-        message: "Cập nhật sản phẩm không thành công !",
-      });
-    }
+
     return res.json({
-      message: "Cập nhật sản phẩm thành công !",
-      user,
+      message: "Cập nhật sản phẩm thành công!",
+      user: updatedUser,
     });
   } catch (error) {
     if (error.name === "CastError") {
       return res.status(400).json({ message: "Id không hợp lệ" });
     }
+    return res.status(500).json({ message: "Lỗi server" });
   }
 };
+
 
 export const get = async (req, res) => {
   try {
