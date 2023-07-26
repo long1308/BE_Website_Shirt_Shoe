@@ -38,3 +38,22 @@ export const signinSchema = Joi.object({
     "any.required": "Trường mật khẩu là bắt buộc",
   }),
 });
+export const updateSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.empty": 'Trường "tên" không được để trống',
+    "any.required": 'Trường "tên" là bắt buộc',
+  }),
+  email: Joi.string().email().required().messages({
+    "string.empty": 'Trường "email" không được để trống',
+    "string.email": 'Trường "email" không đúng định dạng',
+    "any.required": 'Trường "email" là bắt buộc',
+  }),
+  image_url: Joi.string().required().messages({
+    "string.empty": 'Trường "image_url" không được để trống',
+    "any.required": "Trường image_url là bắt buộc",
+  }),
+  confirmPassword: Joi.string().required().messages({
+    "string.empty": 'Trường "tên" không được để trống',
+    "any.required": 'Trường "tên" là bắt buộc',
+  }),
+});
