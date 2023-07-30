@@ -3,22 +3,21 @@ import Product from "../models/product";
 // Get all carts
 const getAllCarts = async (req, res) => {
   try {
-    const carts = await Cart.find().populate({
-      path: "items.productId",
-      model: "Product",
-    }).populate({
-      path: "userId",
-      model: "User",
-    });
+    const carts = await Cart.find()
+      .populate({
+        path: "items.productId",
+        model: "Product",
+      })
+      .populate({
+        path: "userId",
+        model: "User",
+      });
     if (carts.length === 0) {
       return res.status(200).json({
         message: "Lấy danh sách Cart không thành công",
       });
     }
-    return res.status(200).json({
-      message: "Lấy danh sách Cart thành công",
-      carts,
-    });
+    return res.status(200).json(carts);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -27,17 +26,14 @@ const getAllCarts = async (req, res) => {
 // Get a single cart by ID
 const getCartById = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ "userId": req.params.id }).populate({
+    const cart = await Cart.findOne({ userId: req.params.id }).populate({
       path: "items.productId",
       model: "Product",
     });
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
-    res.status(200).json({
-      message: "Lấy 1 Cart thành công",
-      cart,
-    });
+    res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -92,20 +88,18 @@ const createCart = async (req, res) => {
 
 // Update a cart by ID
 const updateCart = async (req, res) => {
-  const { id } = req.params;
-  const { _id, quantity } = req.body;
+  const { id } = req.params; // id của user
+  const { _id, quantity } = req.body; // id của từng sản phẩm và số lượng chứ không phải id của product
 
   try {
-    const cart = await Cart.findOne({ "userId": id });
+    const cart = await Cart.findOne({ userId: id });
     // Nếu cart không tồn tại
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
 
-
     // Kiểm tra sản phẩm có tồn tại trong giỏ hàng không
     const existingItem = cart.items.find((item) => item._id.toString() === _id);
-
     if (existingItem) {
       const product = await Product.findById(existingItem.productId);
 
