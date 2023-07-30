@@ -15,9 +15,8 @@ export const signupSchema = Joi.object({
     "string.min": 'Trường "mật khẩu" phải có ít nhất 6 ký tự',
     "any.required": "Trường mật khẩu là bắt buộc",
   }),
-  image_url: Joi.string().required().messages({
+  image_url: Joi.string().messages({
     "string.empty": 'Trường "image_url" không được để trống',
-    "any.required": "Trường image_url là bắt buộc",
   }),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
     "string.empty": 'Trường "xác nhận mật khẩu" không được để trống',
@@ -48,10 +47,10 @@ export const updateSchema = Joi.object({
     "string.email": 'Trường "email" không đúng định dạng',
     "any.required": 'Trường "email" là bắt buộc',
   }),
-  image_url: Joi.string().required().messages({
-    "string.empty": 'Trường "image_url" không được để trống',
-    "any.required": "Trường image_url là bắt buộc",
-  }),
+  // image_url: Joi.string().required().messages({
+  //   "string.empty": 'Trường "image_url" không được để trống',
+  //   "any.required": "Trường image_url là bắt buộc",
+  // }),
   confirmPassword: Joi.string().required().messages({
     "string.empty": 'Trường "tên" không được để trống',
     "any.required": 'Trường "tên" là bắt buộc',
