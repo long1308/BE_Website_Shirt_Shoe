@@ -50,7 +50,12 @@ export const getSearch = async (req, res) => {
   try {
     const search = req.query.search;
     const regex = new RegExp(search, 'i')
-    const product = await Product.paginate({ name: regex });
+    const product = await Product.paginate({
+      $or: [
+        { name: regex },
+        { description: regex }
+      ]
+    });
     if (product.length === 0) {
       return res.json({
         message: "Không tìm thấy sản phẩm phù hợp !",
